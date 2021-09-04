@@ -67,6 +67,8 @@ def upload_files():
         byteImg = buf.read()
         
         return send_file(io.BytesIO(byteImg),mimetype='image/png',attachment_filename='generated.png')
+    
+    #For testing through local browser
     return '''
     <form method="POST" enctype="multipart/form-data" action="/upload">
         <input type="file" name="files" multiple="">
@@ -75,7 +77,3 @@ def upload_files():
     </form>
     '''
 
-def get_rarity(chance,selected_rarity,rarity_pool):
-    rarity = rarity_pool.pop()
-    if rarity > selected_rarity:
-        selected_rarity = rarity
