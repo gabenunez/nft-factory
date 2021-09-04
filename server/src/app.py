@@ -35,10 +35,7 @@ def upload_files():
                     rarity: []
                 })
             pool[layer][rarity].append({name:file})
-            
-        chance = randint(0,100)
-        base_pool = pool[list(pool)[0]]
-        rarity_pool = list(base_pool)
+        
         in_img = None
         for layer in pool:
             chance = randint(0,100)
