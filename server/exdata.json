@@ -1,0 +1,55 @@
+{
+    "layers":[
+        "Base",
+        "Head",
+        "Eyes"
+    ],
+    "data":{
+        "Black.png":{
+            "name":"Black",
+            "layer":"Base",
+            "percent":25
+        },
+        "Red.png":{
+            "name":"Red",
+            "layer":"Base",
+            "percent":65
+        },
+        "Blue.png":{
+            "name":"Blue",
+            "layer":"Base",
+            "percent":15
+        },
+        "RedLasers.png":{
+            "name":"Red Lasers",
+            "layer":"Eyes",
+            "percent":100
+        },
+        "Scientist.png":{
+            "name":"Scientist",
+            "layer":"Eyes",
+            "percent":100
+        },
+        "GroovySunglasses.png":{
+            "name":"Groovy Sunglasses",
+            "layer":"Eyes",
+            "percent":100
+        },
+        "ElfHat.png":{
+            "name":"Elf Hat",
+            "layer":"Head",
+            "percent":100
+        },
+        "ChopperHat.png":{
+            "name":"Chopper Hat",
+            "layer":"Head",
+            "percent":100
+        },
+        "RedNightCap.png":{
+            "name":"Red Night Cap",
+            "layer":"Head",
+            "percent":100
+        }
+
+    }
+}
