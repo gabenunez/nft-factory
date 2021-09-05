@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
@@ -10,7 +11,85 @@ import Button from 'react-bootstrap/Button';
 
 export default function Home() {
   const [selectedImages, setSelectedImages] = useState([[]]);
+  const [previewImage, setPreviewImage] = useState('');
 
+  async function fetchExampleImage() {
+    try {
+      const formData = new FormData();
+
+      selectedImages.forEach((imageSet) => {
+        imageSet.forEach((image) => {
+          formData.append('files', image);
+        });
+      });
+
+      const stringyData = JSON.stringify({
+        layers: ['Base', 'Head', 'Eyes'],
+        data: {
+          'Black.png': {
+            name: 'Black',
+            layer: 'Base',
+            percent: 25
+          },
+          'Red.png': {
+            name: 'Red',
+            layer: 'Base',
+            percent: 65
+          },
+          'Blue.png': {
+            name: 'Blue',
+            layer: 'Base',
+            percent: 15
+          },
+          'RedLasers.png': {
+            name: 'Red Lasers',
+            layer: 'Eyes',
+            percent: 100
+          },
+          'Scientist.png': {
+            name: 'Scientist',
+            layer: 'Eyes',
+            percent: 100
+          },
+          'GroovySunglasses.png': {
+            name: 'Groovy Sunglasses',
+            layer: 'Eyes',
+            percent: 100
+          },
+          'ElfHat.png': {
+            name: 'Elf Hat',
+            layer: 'Head',
+            percent: 100
+          },
+          'ChopperHat.png': {
+            name: 'Chopper Hat',
+            layer: 'Head',
+            percent: 100
+          },
+          'RedNightCap.png': {
+            name: 'Red Night Cap',
+            layer: 'Head',
+            percent: 100
+          }
+        }
+      });
+
+      formData.append('filedata', stringyData);
+
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+      }
+
+      // Save as blob so we can use it on page due to image being sent raw.
+      const response = await axios.post('/api/upload', formData, { responseType: 'blob' });
+      setPreviewImage(URL.createObjectURL(response.data));
+    } catch (err) {
+      alert(
+        "Sorry, we're having problems connecting to our internal server. Please try again later."
+      );
+      console.error(err);
+    }
+  }
   return (
     <div>
       <Head>
@@ -24,6 +103,8 @@ export default function Home() {
           <Row>
             <Col md={3}>
               <h3>image preview here</h3>
+              <img src={previewImage} />
+              <Button onClick={fetchExampleImage}>Generate example image</Button>
             </Col>
             <Col md={9}>
               <Button onClick={() => setSelectedImages([[], ...selectedImages])}>

@@ -5,9 +5,11 @@ module.exports = {
     return [
       {
         source: '/api/:slug*',
-        destination: `${(process.env.NODE_ENV = 'production'
-          ? 'http://api.nftfactory.dev/:slug*'
-          : 'https://localhost:5000')}/:slug*`
+        destination: `${
+          process.env.NODE_ENV === 'production'
+            ? 'http://api.nftfactory.dev/:slug*'
+            : 'http://localhost:5000/:slug*'
+        }`
       }
     ];
   }
