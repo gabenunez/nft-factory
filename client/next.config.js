@@ -7,7 +7,7 @@ module.exports = {
         source: '/api/:slug*',
         destination: `${(process.env.NODE_ENV = 'production'
           ? 'http://api.nftfactory.dev/:slug*'
-          : 'https://localhost:2020')}/:slug*`
+          : 'https://localhost:5000')}/:slug*`
       }
     ];
   }
