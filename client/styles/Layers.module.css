@@ -4,6 +4,7 @@
   overflow-y: auto;
   background: #c9c9c9;
   max-width: 100%;
+  min-width: 100%;
 }
 
 .imageReelImage {

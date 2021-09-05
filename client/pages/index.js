@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Layers from '../components/layers';
+import Button from 'react-bootstrap/Button';
 
 export default function Home() {
   const [selectedImages, setSelectedImages] = useState([[]]);
@@ -25,7 +26,13 @@ export default function Home() {
               <h3>image preview here</h3>
             </Col>
             <Col md={9}>
+              <Button onClick={() => setSelectedImages([[], ...selectedImages])}>
+                + New Layer
+              </Button>
               <Layers selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+              <Button onClick={() => setSelectedImages([...selectedImages, []])}>
+                + New Layer
+              </Button>
             </Col>
           </Row>
         </Container>

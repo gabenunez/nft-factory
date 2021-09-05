@@ -24,14 +24,14 @@ function ImageReel({ imageSet, setImageSet }) {
   }, [imageSet]);
 
   return (
-    <div className={`${styles.imageReelContainer} d-flex`}>
+    <div className={`${styles.imageReelContainer} d-flex mb-3`}>
       <div {...getRootProps({ className: `${styles.dropzone} w-100 d-flex` })}>
         <input {...getInputProps()} />
 
         <Row className="w-100">
           {!isDragActive && !imageSet.length && (
             <Col className="d-flex justify-content-center align-items-center">
-              <p className={styles.dragAndDropMessage}>Drop images here (1MB Max, .PNG Only)</p>
+              <p className={styles.dragAndDropMessage}>Drop images here (1mb max, .png only)</p>
             </Col>
           )}
 
@@ -40,7 +40,7 @@ function ImageReel({ imageSet, setImageSet }) {
               xs="4"
               md="2"
               key={imageSrc + index}
-              className="d-flex align-items-center justify-content-center mb-3"
+              className="d-flex align-items-center justify-content-center mb-1 mt-1"
             >
               <OnImagesLoaded
                 onLoaded={() => {

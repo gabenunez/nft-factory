@@ -9,7 +9,7 @@ import image from 'next/image';
 
 function Layers({ selectedImages, setSelectedImages }) {
   return (
-    <div>
+    <div className="mb-3 mt-3">
       {selectedImages.map((imageSet, index) => {
         return (
           <div key={index}>
