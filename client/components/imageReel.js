@@ -44,7 +44,7 @@ function ImageReel({ imageSet, setImageSet }) {
           />
           <BsPencil color="#989898" />
         </div>
-        {imageSet.images && <p>{imageSet.images.length}</p>}
+        {imageSet.images.length > 0 && <p>{imageSet.images.length}</p>}
       </div>
 
       {currentImages.length > 0 && <h5>{currentImages.length} Images selected</h5>}
