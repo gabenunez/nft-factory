@@ -13,14 +13,11 @@ function Layers({ selectedImages, setSelectedImages }) {
       {selectedImages.map((imageSet, index) => {
         return (
           <div key={index}>
-            <h4>
-              Layer {index + 1} {imageSet.length > 0 && <>({imageSet.length} Images)</>}
-            </h4>
             <ImageReel
               imageSet={imageSet}
-              setImageSet={(images) => {
+              setImageSet={(newImageSetValue) => {
                 const selectedImageCopy = [...selectedImages];
-                selectedImageCopy[index] = images;
+                selectedImageCopy[index] = { ...newImageSetValue };
                 setSelectedImages(selectedImageCopy);
               }}
             />

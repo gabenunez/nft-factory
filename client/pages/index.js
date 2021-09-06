@@ -10,7 +10,7 @@ import Layers from '../components/layers';
 import Button from 'react-bootstrap/Button';
 
 export default function Home() {
-  const [selectedImages, setSelectedImages] = useState([[]]);
+  const [selectedImages, setSelectedImages] = useState([{ name: '', images: [] }]);
   const [previewImage, setPreviewImage] = useState('');
 
   async function fetchExampleImage() {
@@ -18,7 +18,7 @@ export default function Home() {
       const formData = new FormData();
 
       selectedImages.forEach((imageSet) => {
-        imageSet.forEach((image) => {
+        imageSet.images.forEach((image) => {
           formData.append('files', image);
         });
       });
@@ -106,7 +106,9 @@ export default function Home() {
               <Button onClick={fetchExampleImage}>Generate example image</Button>
             </Col>
             <Col md={9}>
-              <Button onClick={() => setSelectedImages([[], ...selectedImages])}>
+              <Button
+                onClick={() => setSelectedImages([{ name: '', images: [] }, ...selectedImages])}
+              >
                 + New Layer
               </Button>
               <Layers selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
