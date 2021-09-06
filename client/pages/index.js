@@ -102,8 +102,7 @@ export default function Home() {
         <Container>
           <Row>
             <Col md={3}>
-              <h3>image preview here</h3>
-              <img src={previewImage} />
+              <img className="d-block img-fluid " src={previewImage} />
               <Button onClick={fetchExampleImage}>Generate example image</Button>
             </Col>
             <Col md={9}>
@@ -111,9 +110,6 @@ export default function Home() {
                 + New Layer
               </Button>
               <Layers selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
-              <Button onClick={() => setSelectedImages([...selectedImages, []])}>
-                + New Layer
-              </Button>
             </Col>
           </Row>
         </Container>
