@@ -33,21 +33,28 @@ function ImageReel({ imageSet, setImageSet }) {
   return (
     <div>
       <div>
-        <div className="mb-2 d-flex align-items-end">
-          <input
-            className={styles.layerInput}
-            placeholder=""
-            type="text"
-            value={layerName}
-            onChange={setLayerName}
-            placeholder="Layer name"
-          />
-          <BsPencil color="#989898" />
-        </div>
-        {imageSet.images.length > 0 && <p>{imageSet.images.length}</p>}
+        <Row className="mb-2">
+          <Col className="d-flex align-items-end">
+            <input
+              className={styles.layerInput}
+              placeholder=""
+              type="text"
+              value={layerName}
+              onChange={setLayerName}
+              placeholder="Layer name"
+            />
+            <BsPencil color="#989898" />
+          </Col>
+          <Col xs="auto" className="d-flex align-items-end">
+            {imageSet.images.length > 0 && (
+              <p className="mb-0">
+                {imageSet.images.length} image{imageSet.images.length > 1 && 's'} selected
+              </p>
+            )}
+          </Col>
+        </Row>
       </div>
 
-      {currentImages.length > 0 && <h5>{currentImages.length} Images selected</h5>}
       <div className={`${styles.imageReelContainer} d-flex mb-3`}>
         <div {...getRootProps({ className: `${styles.dropzone} w-100 d-flex` })}>
           <input {...getInputProps()} />
