@@ -46,3 +46,9 @@
   width: 100%;
   font-size: 12px;
 }
+
+.layerDirection {
+  background: none;
+  border: none;
+  padding: 0;
+}

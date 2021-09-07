@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import styles from '../styles/Layers.module.css';
-import { useDropzone } from 'react-dropzone';
-import OnImagesLoaded from 'react-on-images-loaded';
 import ImageReel from '../components/imageReel';
-import image from 'next/image';
+import { arrayMoveImmutable } from 'array-move';
 
 function Layers({ selectedImages, setSelectedImages }) {
+  function moveLayerUp(currentLayerIndex) {
+    setSelectedImages(arrayMoveImmutable(selectedImages(currentLayerIndex, currentLayerIndex + 1)));
+  }
+
+  function moveLayerDown(currentLayerIndex) {}
+
   return (
     <div className="mb-3 mt-3">
       {selectedImages.map((imageSet, index) => {
@@ -20,6 +20,14 @@ function Layers({ selectedImages, setSelectedImages }) {
                 selectedImageCopy[index] = { ...newImageSetValue };
                 setSelectedImages(selectedImageCopy);
               }}
+              currentLayerPosition={index}
+              totalLayers={selectedImages.length}
+              moveLayerUp={() =>
+                setSelectedImages(arrayMoveImmutable(selectedImages, index, index - 1))
+              }
+              moveLayerDown={() =>
+                setSelectedImages(arrayMoveImmutable(selectedImages, index, index + 1))
+              }
             />
           </div>
         );

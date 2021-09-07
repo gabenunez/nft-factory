@@ -4,10 +4,17 @@ import Col from 'react-bootstrap/Col';
 import styles from '../styles/ImageReels.module.css';
 import { useDropzone } from 'react-dropzone';
 import OnImagesLoaded from 'react-on-images-loaded';
-import { BsPencil } from 'react-icons/bs';
+import { BsPencil, BsArrowDown, BsArrowUp } from 'react-icons/bs';
 import { MdRemoveCircle } from 'react-icons/md';
 
-function ImageReel({ imageSet, setImageSet }) {
+function ImageReel({
+  imageSet,
+  setImageSet,
+  currentLayerPosition,
+  totalLayers,
+  moveLayerUp,
+  moveLayerDown
+}) {
   const [imagePreviews, setImagePreviews] = useState([]);
   const { images: currentImages, name: layerName } = imageSet;
 
@@ -49,27 +56,40 @@ function ImageReel({ imageSet, setImageSet }) {
 
   return (
     <div>
-      <div>
-        <Row className="mb-2">
-          <Col className="d-flex align-items-end">
-            <input
-              className={styles.layerInput}
-              type="text"
-              value={layerName}
-              onChange={setLayerName}
-              placeholder="Layer name"
-            />
-            <BsPencil color="#989898" />
+      <Row className="mb-2">
+        <Col className="d-flex align-items-end">
+          <input
+            className={styles.layerInput}
+            type="text"
+            value={layerName}
+            onChange={setLayerName}
+            placeholder="Layer name"
+          />
+          <BsPencil color="#989898" />
+        </Col>
+
+        {totalLayers > 1 && (
+          <Col className="d-flex align-items-end" xs="auto">
+            <button
+              disabled={currentLayerPosition === totalLayers - 1}
+              aria-label="Move layer down"
+              className={styles.layerDirection}
+              onClick={moveLayerDown}
+            >
+              <BsArrowDown size={20} />
+            </button>
+
+            <button
+              disabled={currentLayerPosition === 0}
+              aria-label="Move layer up"
+              className={styles.layerDirection}
+              onClick={moveLayerUp}
+            >
+              <BsArrowUp size={20} />
+            </button>
           </Col>
-          <Col xs="auto" className="d-flex align-items-end">
-            {imageSet.images.length > 0 && (
-              <p className="mb-0">
-                {imageSet.images.length} image{imageSet.images.length > 1 && 's'} selected
-              </p>
-            )}
-          </Col>
-        </Row>
-      </div>
+        )}
+      </Row>
 
       <div className={`${styles.imageReelContainer} d-flex mb-3`}>
         <div
@@ -109,7 +129,7 @@ function ImageReel({ imageSet, setImageSet }) {
                   type="text"
                   value={imageSet.images[index].attributeName}
                   onChange={(event) => modifyAttributeName(index, event.target.value)}
-                  placeholder="Attribute name"
+                  placeholder={`Attribute name #${index + 1}`}
                 />
               )}
             </div>
