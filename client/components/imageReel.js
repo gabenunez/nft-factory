@@ -5,6 +5,7 @@ import styles from '../styles/ImageReels.module.css';
 import { useDropzone } from 'react-dropzone';
 import OnImagesLoaded from 'react-on-images-loaded';
 import { BsPencil } from 'react-icons/bs';
+import { MdRemoveCircle } from 'react-icons/md';
 
 function ImageReel({ imageSet, setImageSet }) {
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -14,8 +15,14 @@ function ImageReel({ imageSet, setImageSet }) {
     accept: '.png',
     maxSize: 1000000,
     noClick: currentImages.length > 0,
-    onDrop: (acceptedFiles) =>
-      setImageSet({ ...imageSet, images: [...currentImages, ...acceptedFiles] })
+    onDrop: (acceptedFiles) => {
+      // Add attributeName as a default file property
+      acceptedFiles.forEach((file) => {
+        file.attributeName = '';
+        file.previewUrl = URL.createObjectURL(file);
+      });
+      setImageSet({ ...imageSet, images: [...currentImages, ...acceptedFiles] });
+    }
   });
 
   useEffect(() => {
@@ -30,6 +37,16 @@ function ImageReel({ imageSet, setImageSet }) {
     setImageSet({ ...imageSet, name: event.target.value });
   }
 
+  function removeImageFromReel(imgIndex) {
+    setImageSet({ ...imageSet, images: currentImages.filter((_, i) => i !== imgIndex) });
+  }
+
+  function modifyAttributeName(imgIndex, newValue) {
+    const imageSetCopy = { ...imageSet };
+    imageSetCopy.images[imgIndex].attributeName = newValue;
+    setImageSet(imageSetCopy);
+  }
+
   return (
     <div>
       <div>
@@ -37,7 +54,6 @@ function ImageReel({ imageSet, setImageSet }) {
           <Col className="d-flex align-items-end">
             <input
               className={styles.layerInput}
-              placeholder=""
               type="text"
               value={layerName}
               onChange={setLayerName}
@@ -56,34 +72,48 @@ function ImageReel({ imageSet, setImageSet }) {
       </div>
 
       <div className={`${styles.imageReelContainer} d-flex mb-3`}>
-        <div {...getRootProps({ className: `${styles.dropzone} w-100 d-flex` })}>
+        <div
+          {...getRootProps({
+            className: `w-100 ${!isDragActive && !currentImages.length && 'd-flex'}`
+          })}
+        >
           <input {...getInputProps()} />
 
-          <Row className="w-100">
-            {!isDragActive && !currentImages.length && (
-              <Col className="d-flex justify-content-center align-items-center">
-                <p>Drop images here (1mb max, .png only)</p>
-              </Col>
-            )}
+          {!isDragActive && !currentImages.length && (
+            <Col className="d-flex justify-content-center align-items-center">
+              <p>Drop images here (1mb max, .png only)</p>
+            </Col>
+          )}
 
-            {imagePreviews.map((imageSrc, index) => (
-              <Col
-                xs="4"
-                md="2"
-                key={imageSrc + index}
-                className="d-flex align-items-center justify-content-center mb-1 mt-1"
+          {imagePreviews.map((imageSrc, index) => (
+            <div key={'image-preview' + index} className={styles.reelImageWrapper}>
+              <button
+                onClick={() => removeImageFromReel(index)}
+                aria-label="Remove image"
+                className={styles.removeImageButton}
               >
-                <OnImagesLoaded
-                  onLoaded={() => {
-                    // Prevent memory leaks by removing the local blob after image loaded
-                    URL.revokeObjectURL(imageSrc);
-                  }}
-                >
-                  <img className={`img-fluid ${styles.imageReelImage}`} src={imageSrc} />
-                </OnImagesLoaded>
-              </Col>
-            ))}
-          </Row>
+                <MdRemoveCircle size={20} color="#ce1010" />
+              </button>
+              <OnImagesLoaded
+                onLoaded={() => {
+                  // Prevent memory leaks by removing the local blob after image loaded
+                  URL.revokeObjectURL(imageSrc);
+                }}
+              >
+                <img className={`img-fluid ${styles.imageReelImage}`} src={imageSrc} />
+              </OnImagesLoaded>
+
+              {imageSet.images[index] && (
+                <input
+                  className={styles.imageNameInput}
+                  type="text"
+                  value={imageSet.images[index].attributeName}
+                  onChange={(event) => modifyAttributeName(index, event.target.value)}
+                  placeholder="Attribute name"
+                />
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </div>

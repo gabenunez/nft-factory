@@ -5,12 +5,8 @@
   background: #c9c9c9;
   max-width: 100%;
   min-width: 100%;
-}
-
-.imageReelImage {
-  border: solid 1px #7a7a7a;
-  margin: 0 auto;
-  max-height: 100px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .layerInput {
@@ -18,4 +14,35 @@
   border-left: none;
   border-right: none;
   border-color: #989898;
+}
+
+.reelImageWrapper {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 1rem;
+}
+
+.removeImageButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+}
+
+.imageReelImage {
+  max-height: 125px;
+}
+
+.imageNameInput {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-color: #989898;
+  background: none;
+  width: 100%;
+  font-size: 12px;
 }

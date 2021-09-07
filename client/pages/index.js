@@ -76,10 +76,6 @@ export default function Home() {
 
       formData.append('filedata', stringyData);
 
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-      }
-
       // Save as blob so we can use it on page due to image being sent raw.
       const response = await axios.post('/api/upload', formData, { responseType: 'blob' });
       setPreviewImage(URL.createObjectURL(response.data));
