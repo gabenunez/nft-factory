@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 import styles from '../styles/ImageReels.module.css';
 import { useDropzone } from 'react-dropzone';
 import OnImagesLoaded from 'react-on-images-loaded';
-import { BsPencil, BsArrowDown, BsArrowUp } from 'react-icons/bs';
+import { BsXCircleFill, BsPencil, BsArrowDown, BsArrowUp } from 'react-icons/bs';
 import { MdRemoveCircle } from 'react-icons/md';
 
 function ImageReel({
@@ -26,7 +28,7 @@ function ImageReel({
       // Add attributeName as a default file property
       acceptedFiles.forEach((file) => {
         file.attributeName = '';
-        file.previewUrl = URL.createObjectURL(file);
+        file.percentageChance = 100;
       });
       setImageSet({ ...imageSet, images: [...currentImages, ...acceptedFiles] });
     }
@@ -51,6 +53,12 @@ function ImageReel({
   function modifyAttributeName(imgIndex, newValue) {
     const imageSetCopy = { ...imageSet };
     imageSetCopy.images[imgIndex].attributeName = newValue;
+    setImageSet(imageSetCopy);
+  }
+
+  function modifyPercentageChance(imgIndex, newValue) {
+    const imageSetCopy = { ...imageSet };
+    imageSetCopy.images[imgIndex].percentageChance = newValue;
     setImageSet(imageSetCopy);
   }
 
@@ -111,8 +119,9 @@ function ImageReel({
                 onClick={() => removeImageFromReel(index)}
                 aria-label="Remove image"
                 className={styles.removeImageButton}
+                title="Remove attribute"
               >
-                <MdRemoveCircle size={20} color="#ce1010" />
+                <BsXCircleFill size={16} color="#ce1010" />
               </button>
               <OnImagesLoaded
                 onLoaded={() => {
@@ -124,13 +133,29 @@ function ImageReel({
               </OnImagesLoaded>
 
               {imageSet.images[index] && (
-                <input
-                  className={styles.imageNameInput}
-                  type="text"
-                  value={imageSet.images[index].attributeName}
-                  onChange={(event) => modifyAttributeName(index, event.target.value)}
-                  placeholder={`Attribute name #${index + 1}`}
-                />
+                <>
+                  <input
+                    className={styles.imageNameInput}
+                    type="text"
+                    value={imageSet.images[index].attributeName}
+                    onChange={(event) => modifyAttributeName(index, event.target.value)}
+                    placeholder={`Attribute name #${index + 1}`}
+                  />
+
+                  <InputGroup>
+                    <FormControl
+                      type="number"
+                      className={styles.percentageInput}
+                      onChange={(event) => modifyPercentageChance(index, event.target.value)}
+                      value={imageSet.images[index].percentageChance}
+                      aria-label="Percentage likelyhood"
+                      placeholder="Percentage chance"
+                      min="1"
+                      max="100"
+                    />
+                    <InputGroup.Text className={styles.percentageText}>%</InputGroup.Text>
+                  </InputGroup>
+                </>
               )}
             </div>
           ))}

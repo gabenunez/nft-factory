@@ -45,10 +45,41 @@
   background: none;
   width: 100%;
   font-size: 12px;
+  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
 }
 
 .layerDirection {
   background: none;
   border: none;
   padding: 0;
+}
+
+.percentageInput {
+  padding: 0;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-size: 12px;
+  border-color: #989898;
+  border-radius: 0;
+  border-bottom-width: 2px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.percentageInput:focus {
+  background: none;
+}
+
+.percentageText {
+  background: none;
+  font-size: 12px;
+  border-left: none;
+  border-top: none;
+  border-right: none;
+  border-color: #989898;
+  border-radius: 0;
+  border-bottom-width: 2px;
 }
