@@ -8,7 +8,6 @@ def encode_image(img_bytes):
     return f"data:image/png;base64,{base64.b64encode(img_bytes).decode('ascii')}"
 
 
-
 def generate_image_from_pool(pool,in_img):
     chance = randint(0,100)
     rarity_pool = list(pool)
@@ -31,6 +30,8 @@ def generate_image_from_pool(pool,in_img):
         image = Image.open(buf).convert('RGBA')
         in_img.paste(image,(0,0),image)
     return in_img
+
+
 def image_factory(json_data):
     layers = list(json_data)
     in_img = None
@@ -49,6 +50,7 @@ def image_factory(json_data):
     encoded = encode_image(final_img.read())
     return encoded
 
+
 def preview_image(request):
     json_data = request.json
     encoded = image_factory(json_data)
@@ -57,9 +59,3 @@ def preview_image(request):
     }
     return res_data
 
-    
-    
-
-
-def generate_images(layers, n=1):
-    pass
