@@ -25,9 +25,10 @@ function ImageReel({
     maxSize: 1000000,
     noClick: currentImages.length > 0,
     onDrop: (acceptedFiles) => {
-      // Add attributeName as a default file property
       acceptedFiles.forEach((file) => {
-        file.attributeName = '';
+        // Add attributeName as a default file property (initially set as name)
+        file.attributeName = file.name.split('.')[0];
+        // Add percentageChance as a default file property
         file.percentageChance = 100;
       });
       setImageSet({ ...imageSet, images: [...currentImages, ...acceptedFiles] });
