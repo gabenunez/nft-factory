@@ -2,12 +2,6 @@ import ImageReel from '../components/imageReel';
 import { arrayMoveImmutable } from 'array-move';
 
 function Layers({ selectedImages, setSelectedImages }) {
-  function moveLayerUp(currentLayerIndex) {
-    setSelectedImages(arrayMoveImmutable(selectedImages(currentLayerIndex, currentLayerIndex + 1)));
-  }
-
-  function moveLayerDown(currentLayerIndex) {}
-
   return (
     <div className="mb-3 mt-3">
       {selectedImages.map((imageSet, index) => {
