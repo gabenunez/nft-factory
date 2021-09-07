@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Layers from '../components/layers';
 import Button from 'react-bootstrap/Button';
+import { BsQuestionOctagon } from 'react-icons/bs';
 
 export default function Home() {
   const [selectedImages, setSelectedImages] = useState([{ name: '', images: [] }]);
@@ -98,8 +99,17 @@ export default function Home() {
         <Container>
           <Row>
             <Col md={3}>
-              <img className="d-block img-fluid " src={previewImage} />
-              <Button onClick={fetchExampleImage}>Generate example image</Button>
+              <div className="d-flex justify-content-center mb-3">
+                {previewImage && (
+                  <img className="d-block img-fluid " alt="Preview image" src={previewImage} />
+                )}
+
+                {!previewImage && <BsQuestionOctagon color="#0d6efd" size="100px" />}
+              </div>
+
+              <div className="d-flex justify-content-center">
+                <Button onClick={fetchExampleImage}>Generate example image</Button>
+              </div>
             </Col>
             <Col md={9}>
               <Button
