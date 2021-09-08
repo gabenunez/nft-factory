@@ -84,7 +84,6 @@ def image_factory(json_data,n=1,is_encoded=True):
 def preview_image(request):
     json_data = request.json
     encoded = image_factory(json_data)
-    print(calculate_total_possibilities(json_data))
     res_data = {
         "image":encoded[0]
     }
