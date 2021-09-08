@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Layers from '../components/layers';
 import Button from 'react-bootstrap/Button';
 import { BsQuestionOctagon } from 'react-icons/bs';
+import FileToBase64 from 'dd-file-to-base64';
 
 export default function Home() {
   const [selectedImages, setSelectedImages] = useState([{ name: '', images: [] }]);
@@ -16,70 +17,27 @@ export default function Home() {
 
   async function fetchExampleImage() {
     try {
-      const formData = new FormData();
+      const requestPayload = {};
 
-      selectedImages.forEach((imageSet) => {
-        imageSet.images.forEach((image) => {
-          formData.append('files', image);
+      const reversedLayers = [...selectedImages].reverse();
+      for (const layer of reversedLayers) {
+        let base64images = layer.images.map((image) => {
+          return FileToBase64.convert(image);
         });
-      });
 
-      const stringyData = JSON.stringify({
-        layers: ['Base', 'Head', 'Eyes'],
-        data: {
-          'Black.png': {
-            name: 'Black',
-            layer: 'Base',
-            percent: 25
-          },
-          'Red.png': {
-            name: 'Red',
-            layer: 'Base',
-            percent: 65
-          },
-          'Blue.png': {
-            name: 'Blue',
-            layer: 'Base',
-            percent: 15
-          },
-          'RedLasers.png': {
-            name: 'Red Lasers',
-            layer: 'Eyes',
-            percent: 100
-          },
-          'Scientist.png': {
-            name: 'Scientist',
-            layer: 'Eyes',
-            percent: 100
-          },
-          'GroovySunglasses.png': {
-            name: 'Groovy Sunglasses',
-            layer: 'Eyes',
-            percent: 100
-          },
-          'ElfHat.png': {
-            name: 'Elf Hat',
-            layer: 'Head',
-            percent: 100
-          },
-          'ChopperHat.png': {
-            name: 'Chopper Hat',
-            layer: 'Head',
-            percent: 100
-          },
-          'RedNightCap.png': {
-            name: 'Red Night Cap',
-            layer: 'Head',
-            percent: 100
-          }
-        }
-      });
+        base64images = await Promise.all(base64images);
 
-      formData.append('filedata', stringyData);
+        requestPayload[layer.name] = layer.images.map((image, imageIndex) => {
+          return {
+            name: image.attributeName,
+            image: base64images[imageIndex].split('base64,')[1],
+            chance: image.percentageChance
+          };
+        });
+      }
 
-      // Save as blob so we can use it on page due to image being sent raw.
-      const response = await axios.post('/api/preview', formData, { responseType: 'blob' });
-      setPreviewImage(URL.createObjectURL(response.data));
+      const response = await axios.post('/api/preview', requestPayload);
+      setPreviewImage(response.data.image);
     } catch (err) {
       alert(
         "Sorry, we're having problems connecting to our internal server. Please try again later."

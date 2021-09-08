@@ -59,7 +59,7 @@ function ImageReel({
 
   function modifyPercentageChance(imgIndex, newValue) {
     const imageSetCopy = { ...imageSet };
-    imageSetCopy.images[imgIndex].percentageChance = newValue;
+    imageSetCopy.images[imgIndex].percentageChance = parseInt(newValue);
     setImageSet(imageSetCopy);
   }
 
