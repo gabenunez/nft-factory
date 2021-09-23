@@ -39,9 +39,9 @@ export default function Home() {
           chance: image.percentageChance
         };
       });
-
-      return requestPayload;
     }
+
+    return requestPayload;
   }
 
   async function generateImageCollection() {
