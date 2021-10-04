@@ -17,6 +17,15 @@ Locate requirements.txt file, in the directory its located run the following com
 pip install -r requirements.txt
 ```
 
+```
+Create .env file located under server directory
+Add the following to the .env file
+
+pinata_api_key="<Insert Api Key>"
+pinata_secret="<Insert Secret>"
+infura_id="<Add Infura Project Id>"
+```
+
 To run app then 
 ```
 cd src
