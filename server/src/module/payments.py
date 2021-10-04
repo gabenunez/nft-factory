@@ -41,7 +41,6 @@ def process_signed_transaction(signed_tx):
     message_hash = defunct_hash_message(text="Validate Bear Ownership")
     address = web3.Account.recoverHash(message_hash,signature=signed_tx)
     balance = token_instance.functions.balanceOf(address).call()
-    print(balance)
     return balance >= 1
 
 
