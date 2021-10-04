@@ -8,6 +8,8 @@ import time
 from zipfile import ZipFile
 import json
 
+from module import ipfs_util
+
 
 def encode_image(img_bytes):
     return f"data:image/png;base64,{base64.b64encode(img_bytes).decode('ascii')}"
@@ -41,24 +43,28 @@ def generate_image_from_pool(metadata_attributes,layer,pool,in_img):
         if chance <= t1 or chance >= t2:
             if rarity < selected_rarity:
                 selected_rarity = rarity
-    rp = randint(0,len(pool[selected_rarity])-1)
-    item_selected = pool[selected_rarity][rp]
-    item_name = list(item_selected)[0]
-    image_decoded = base64.b64decode(item_selected[item_name])
-    buf = io.BytesIO()
-    buf.write(image_decoded)
-    if not in_img:
-        in_img = Image.open(buf).convert('RGBA')
-    else:
-        image = Image.open(buf).convert('RGBA')
-        in_img.paste(image,(0,0),image)
+    if(selected_rarity != 1000):
+        rp = randint(0,len(pool[selected_rarity])-1)
+        item_selected = pool[selected_rarity][rp]
+        item_name = list(item_selected)[0]
+        image_decoded = base64.b64decode(item_selected[item_name])
+        buf = io.BytesIO()
+        buf.write(image_decoded)
+        if not in_img:
+            in_img = Image.open(buf).convert('RGBA')
+        else:
+            image = Image.open(buf).convert('RGBA')
+            in_img.paste(image,(0,0),image)
 
-    create_metadata_attribute(metadata_attributes,layer,item_name)
-    
-    return in_img
+        create_metadata_attribute(metadata_attributes,layer,item_name)
+        
+        return in_img
+        
+    create_metadata_attribute(metadata_attributes,layer,"None")   
+    return False
 
 
-def image_factory(json_data,n=1,is_encoded=True):
+def image_factory(json_data,n=1,is_encoded=True,project_name='NFT'):
     layers = list(json_data)
     images = []
     i = 0
@@ -77,7 +83,7 @@ def image_factory(json_data,n=1,is_encoded=True):
             "image":"IPFS Link Goes Here",
             "attributes": []
         }
-        metadata_attributes["name"] = f'ProjectName #{i}'
+        metadata_attributes["name"] = f'{project_name} #{i}'
 
         in_img = None
         for layer in layers:
@@ -127,8 +133,12 @@ def preview_image(request):
 
 def create_images(request,n):
     seed(5000 * randint(5,1337))
+    project_name = request.args.get('project_name')
     json_data =request.json
-    encoded = image_factory(json_data,n,is_encoded=False)
+    encoded = image_factory(json_data,n,is_encoded=False,project_name=project_name)
+    
+    ipfs_util.upload_folder_to_pinata(encoded)
+
     zipped_images = io.BytesIO()
     i = 0
 
